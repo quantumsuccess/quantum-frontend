@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  /* Primary Blue Gradient Colors */
+  --color-primary-start: #3C0FD1;
+  --color-primary-end: #00C8FF;
+  
+  /* Sidebar Colors */
+  --color-sidebar: #101826;
+  --color-sidebar-active: #1E2A48;
+  
+  /* Card and Background Colors */
+  --color-card: #FFFFFF;
+  
+  /* Text Colors */
+  --color-text-primary: #1C1C1C;
+  
+  /* Border Colors */
+  --color-border-light: #E7EBF1;
+}
+
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);

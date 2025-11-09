@@ -1,10 +1,10 @@
-import DashboardTemplate from "@/modules/dashboard/template";
-import Image from "next/image";
+import DashboardLayout from "../components/DashboardLayout";
+import Dashboard from "@/modules/dashboard/components";
 
-export default function page() {
+export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <DashboardTemplate/>
-    </div>
+    <DashboardLayout>
+      <Dashboard />
+    </DashboardLayout>
   );
 }

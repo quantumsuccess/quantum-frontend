@@ -1,33 +1,149 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-import { FC } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-const Navbar:React.FC = () => (
-  <header className="fixed top-0 left-0 w-full z-50 bg-white/60 backdrop-blur-sm">
-    <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center">
-          <span className="text-purple-700 font-bold">QS</span>
+const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/reports", label: "Reports" },
+    { href: "/blogs", label: "Blogs" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/contact", label: "Contact" },
+  ];
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname?.startsWith(href);
+  };
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-card/95 shadow-sm border-b border-border-light/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-start to-primary-end flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+              <span className="text-white font-bold text-lg">★</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-text-primary group-hover:text-primary-start transition-colors">
+                Quantum Success
+              </span>
+              <span className="text-xs text-text-primary/60 font-medium hidden sm:block">
+                Unlock Your Potential
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                  isActive(link.href)
+                    ? "text-primary-start bg-primary-start/10"
+                    : "text-text-primary hover:text-primary-start hover:bg-primary-start/5"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden lg:flex items-center gap-3">
+            <Link
+              href="/login"
+              className="px-5 py-2.5 rounded-lg text-sm font-semibold text-text-primary border-2 border-border-light hover:border-primary-start/30 hover:text-primary-start transition-all duration-300"
+            >
+              Login
+            </Link>
+            <Link
+              href="/signup"
+              className="px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-primary-start to-primary-end hover:from-primary-start/90 hover:to-primary-end/90 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              Get Started
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 rounded-lg text-text-primary hover:bg-primary-start/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
+              <span
+                className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${
+                  isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${
+                  isMobileMenuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${
+                  isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
+              />
+            </div>
+          </button>
         </div>
-        <span className="text-lg font-semibold text-purple-700">Quantum Success</span>
+
+        {/* Mobile Menu */}
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <nav className="py-4 space-y-2 border-t border-border-light">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-300 ${
+                  isActive(link.href)
+                    ? "text-primary-start bg-primary-start/10"
+                    : "text-text-primary hover:text-primary-start hover:bg-primary-start/5"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-4 space-y-2 border-t border-border-light mt-2">
+              <Link
+                href="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 py-3 rounded-lg text-base font-semibold text-text-primary border-2 border-border-light hover:border-primary-start/30 hover:text-primary-start transition-all duration-300 text-center"
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 py-3 rounded-lg text-base font-bold text-white bg-gradient-to-r from-primary-start to-primary-end hover:from-primary-start/90 hover:to-primary-end/90 shadow-lg transition-all duration-300 text-center"
+              >
+                Get Started
+              </Link>
+            </div>
+          </nav>
+        </div>
       </div>
+    </header>
+  );
+};
 
-      <nav className="hidden md:flex items-center gap-6 text-sm text-gray-700">
-        <Link href="/">Home</Link>
-        <Link href="/about">About</Link>
-        <Link href="/reports">Reports</Link>
-        <Link href="/blogs">Blogs</Link>
-        <Link href="/gallery">Gallery</Link>
-        <Link href="/contact">Contact</Link>
-      </nav>
-
-      <div className="hidden md:flex gap-3">
-        <Link href="/login" className="px-4 py-2 rounded-md text-sm font-medium border border-purple-200">Login</Link>
-        <Link href="/signup" className="px-4 py-2 rounded-md bg-purple-700 text-white text-sm font-semibold hover:bg-purple-800">Get Started</Link>
-      </div>
-    </div>
-  </header>
-);
-
-
-export default Navbar
+export default Navbar;

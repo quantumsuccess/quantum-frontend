@@ -14,30 +14,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-gray-50 to-card">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gradient-to-br from-primary-start to-primary-end">
               <span className="text-white font-bold text-xl">★</span>
             </div>
-            <span className="text-2xl font-bold text-blue-700">Quantum Success</span>
+            <span className="text-2xl font-bold text-primary-start">Quantum Success</span>
           </div>
-          <p className="text-gray-600 text-sm">Welcome back!</p>
+          <p className="text-sm text-text-primary">Welcome back!</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
-          <p className="text-gray-500 text-sm mb-6">
+        <div className="rounded-2xl shadow-xl p-8 bg-card">
+          <h1 className="text-3xl font-bold mb-2 text-text-primary">Sign In</h1>
+          <p className="text-sm mb-6 text-text-primary">
             Enter your credentials to access your account
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2 text-text-primary">
                 Email
               </label>
               <input
@@ -45,7 +45,7 @@ export default function LoginPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-start/20 transition-all bg-card border border-border-light focus:border-primary-start"
                 placeholder="Enter your email"
                 required
               />
@@ -53,7 +53,7 @@ export default function LoginPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2 text-text-primary">
                 Password
               </label>
               <input
@@ -61,7 +61,7 @@ export default function LoginPage() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-start/20 transition-all bg-card border border-border-light focus:border-primary-start"
                 placeholder="Enter your password"
                 required
               />
@@ -70,16 +70,16 @@ export default function LoginPage() {
             {/* Sign In Button */}
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-transform"
+              className="w-full py-3 px-4 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-transform bg-gradient-to-r from-primary-start to-primary-end"
             >
               Sign In
             </button>
           </form>
 
           {/* Sign Up Link */}
-          <div className="mt-6 text-center text-sm text-gray-600">
+          <div className="mt-6 text-center text-sm text-text-primary">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-purple-600 font-semibold hover:text-purple-700 hover:underline">
+            <Link href="/signup" className="font-semibold hover:underline text-primary-start">
               Sign up
             </Link>
           </div>
