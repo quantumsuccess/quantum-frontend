@@ -35,7 +35,7 @@ export default function ProfilePage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-start to-primary-end rounded-2xl p-6 sm:p-8 text-white">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">

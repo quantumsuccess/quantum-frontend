@@ -2,18 +2,46 @@
 
 import { useState } from "react";
 import DashboardLayout from "@/app/components/DashboardLayout";
+import Link from "next/link";
 
 export default function GenerateReportPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 5;
+  const totalSteps = 4;
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    fatherName: "",
+    motherName: "",
+    dateOfBirth: "",
+    placeOfBirth: "",
+    timeOfBirth: "",
+    address: "",
+    pincode: "",
+    contactEmail: "",
+    reportType: "",
+  });
+
+  const reportTypes = [
+    { value: "quantum-parenting", label: "Quantum Parenting", questions: 27 },
+    { value: "quantum-prosperity", label: "Quantum Prosperity", questions: 27 },
+    { value: "quantum-excellence", label: "Quantum Excellence", questions: 27 },
+    { value: "quantum-career", label: "Quantum Career", questions: 27 },
+    { value: "quantum-relationships", label: "Quantum Relationships", questions: 27 },
+  ];
 
   const steps = [
-    { number: 1, title: "Personal Info", icon: "👤" },
-    { number: 2, title: "Education", icon: "🎓" },
-    { number: 3, title: "Interests", icon: "🎯" },
-    { number: 4, title: "Goals", icon: "🚀" },
-    { number: 5, title: "Review", icon: "✅" },
+    { number: 1, title: "Details", icon: "📝" },
+    { number: 2, title: "Questions", icon: "❓" },
+    { number: 3, title: "Preview", icon: "👁️" },
+    { number: 4, title: "Download", icon: "⬇️" },
   ];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -27,25 +55,41 @@ export default function GenerateReportPage() {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Report generation submitted");
-    // Add submission logic here
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Report generation submitted", formData);
+    handleNext();
   };
+
+  const selectedReport = reportTypes.find(r => r.value === formData.reportType);
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Header */}
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-sm text-text-primary/60">
+          <Link href="/dashboard" className="hover:text-primary-start transition-colors">
+            Home
+          </Link>
+          <span>/</span>
+          <Link href="/my-reports" className="hover:text-primary-start transition-colors">
+            Reports
+          </Link>
+          <span>/</span>
+          <span className="text-text-primary font-medium">Generate Report</span>
+        </nav>
+
+        {/* Header Section */}
         <div className="bg-gradient-to-r from-primary-start to-primary-end rounded-2xl p-6 sm:p-8 text-white">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Generate Your Quantum Report</h1>
-          <p className="text-white/90">
-            Answer 27 questions to unlock personalized insights about your potential
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Generate Quantum Report</h1>
+          <p className="text-white/90 text-base sm:text-lg">
+            Fill in your details to create your personalized Quantum report.
           </p>
         </div>
 
-        {/* Progress Steps */}
+        {/* Progress Bar / Step Indicator */}
         <div className="bg-card rounded-xl p-6 shadow-sm border border-border-light">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
@@ -77,8 +121,8 @@ export default function GenerateReportPage() {
             ))}
           </div>
 
-          {/* Progress Bar */}
-          <div className="mb-6">
+          {/* Progress Percentage */}
+          <div className="mt-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-text-primary">
                 Step {currentStep} of {totalSteps}
@@ -96,306 +140,300 @@ export default function GenerateReportPage() {
           </div>
         </div>
 
-        {/* Form Content */}
-        <div className="bg-card rounded-xl p-6 sm:p-8 shadow-sm border border-border-light">
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-text-primary mb-6">Personal Information</h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* User Information Form Section */}
+        {currentStep === 1 && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="bg-gray-50 rounded-xl p-6 sm:p-8 shadow-sm border border-border-light">
+              <h2 className="text-xl font-bold text-text-primary mb-6">Personal Information</h2>
+
+              {/* Two Column Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Full Name */}
                 <div>
                   <label className="block text-sm font-medium text-text-primary mb-2">
-                    Full Name *
+                    Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
                   />
                 </div>
 
+                {/* Father's Name */}
                 <div>
                   <label className="block text-sm font-medium text-text-primary mb-2">
-                    Age *
+                    Father&apos;s Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="number"
-                    placeholder="Enter your age"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
+                    type="text"
+                    name="fatherName"
+                    value={formData.fatherName}
+                    onChange={handleChange}
+                    placeholder="Enter father's name"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
                   />
                 </div>
 
+                {/* Mother's Name */}
                 <div>
                   <label className="block text-sm font-medium text-text-primary mb-2">
-                    Gender *
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all">
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Contact Number *
+                    Mother&apos;s Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
+                    type="text"
+                    name="motherName"
+                    value={formData.motherName}
+                    onChange={handleChange}
+                    placeholder="Enter mother's name"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                  />
+                </div>
+
+                {/* Date of Birth */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                  />
+                </div>
+
+                {/* Place of Birth */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Place of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="placeOfBirth"
+                    value={formData.placeOfBirth}
+                    onChange={handleChange}
+                    placeholder="City, State, Country"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                  />
+                </div>
+
+                {/* Time of Birth */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Time of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="time"
+                    name="timeOfBirth"
+                    value={formData.timeOfBirth}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                  />
+                </div>
+
+                {/* Pincode */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Pincode <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    value={formData.pincode}
+                    onChange={handleChange}
+                    placeholder="Enter pincode"
+                    required
+                    maxLength={6}
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                  />
+                </div>
+
+                {/* Contact Email */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Contact Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    placeholder="your.email@example.com"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
                   />
                 </div>
               </div>
 
-              <div>
+              {/* Address - Full Width */}
+              <div className="mt-6">
                 <label className="block text-sm font-medium text-text-primary mb-2">
-                  Current Location *
+                  Address <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  placeholder="City, State, Country"
-                  className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="Enter your complete address"
+                  required
+                  rows={3}
+                  className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none bg-white"
                 />
               </div>
-            </div>
-          )}
 
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-text-primary mb-6">Educational Background</h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Current Education Level *
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all">
-                    <option value="">Select level</option>
-                    <option value="high-school">High School</option>
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="postgraduate">Postgraduate</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Field of Study *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Computer Science, Business, Arts"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Institution Name *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter your school/college name"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Academic Performance
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all">
-                    <option value="">Select performance level</option>
-                    <option value="excellent">Excellent (90%+)</option>
-                    <option value="good">Good (75-90%)</option>
-                    <option value="average">Average (60-75%)</option>
-                    <option value="below-average">Below Average (&lt;60%)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 3 && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-text-primary mb-6">Interests & Hobbies</h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-3">
-                    What are your main interests? (Select all that apply)
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {["Technology", "Arts", "Sports", "Music", "Science", "Business", "Writing", "Social Work", "Travel"].map((interest) => (
-                      <label key={interest} className="flex items-center gap-2 p-3 border border-border-light rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                        <input type="checkbox" className="w-4 h-4 text-primary-start rounded focus:ring-primary-start" />
-                        <span className="text-sm text-text-primary">{interest}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Describe your favorite hobby
-                  </label>
-                  <textarea
-                    rows={4}
-                    placeholder="Tell us about what you love to do in your free time..."
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    How do you spend your weekends?
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Share your typical weekend activities..."
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 4 && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-text-primary mb-6">Career Goals & Aspirations</h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    What is your dream career? *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Software Engineer, Doctor, Entrepreneur"
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Where do you see yourself in 5 years? *
-                  </label>
-                  <textarea
-                    rows={4}
-                    placeholder="Describe your vision for your future..."
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    What are your biggest strengths?
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="List your key strengths and skills..."
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    What challenges do you face in achieving your goals?
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Share any obstacles or concerns..."
-                    className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all resize-none"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 5 && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-text-primary mb-6">Review & Submit</h2>
-              
-              <div className="bg-gradient-to-br from-primary-start/10 to-primary-end/10 rounded-xl p-6 border border-primary-start/20">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary-start text-white rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                    ✓
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-text-primary mb-2">
-                      You&apos;re almost done!
-                    </h3>
-                    <p className="text-text-primary/70">
-                      Please review your information before submitting. Your personalized Quantum Report will be generated based on your responses.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-text-primary mb-2">Personal Information</h4>
-                  <p className="text-sm text-text-primary/70">All fields completed ✓</p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-text-primary mb-2">Educational Background</h4>
-                  <p className="text-sm text-text-primary/70">All fields completed ✓</p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-text-primary mb-2">Interests & Hobbies</h4>
-                  <p className="text-sm text-text-primary/70">All fields completed ✓</p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-text-primary mb-2">Career Goals</h4>
-                  <p className="text-sm text-text-primary/70">All fields completed ✓</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <input type="checkbox" className="mt-1 w-4 h-4 text-primary-start rounded focus:ring-primary-start" />
-                <label className="text-sm text-text-primary">
-                  I agree to the terms and conditions and consent to the processing of my data for generating the Quantum Report.
+              {/* Report Type Dropdown */}
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-text-primary mb-2">
+                  Select Report Type <span className="text-red-500">*</span>
                 </label>
+                <select
+                  name="reportType"
+                  value={formData.reportType}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-border-light focus:outline-none focus:ring-2 focus:ring-primary-start/20 focus:border-primary-start transition-all bg-white"
+                >
+                  <option value="">Choose a report type</option>
+                  {reportTypes.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Questionnaire Preview Section */}
+              {formData.reportType && (
+                <div className="mt-6 bg-gradient-to-br from-primary-start/10 to-primary-end/10 rounded-xl p-6 border border-primary-start/20">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-primary-start text-white rounded-full flex items-center justify-center text-2xl flex-shrink-0">
+                      📋
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-2">
+                        {selectedReport?.label}
+                      </h3>
+                      <p className="text-text-primary/70 mb-4">
+                        Total Questions: <span className="font-semibold text-primary-start">{selectedReport?.questions} Questions</span> for this report type.
+                      </p>
+                      <p className="text-sm text-text-primary/60">
+                        After submitting your details, you&apos;ll be guided through a comprehensive questionnaire to generate your personalized report.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-primary-start to-primary-end text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl"
+                >
+                  Next: Answer Questionnaire →
+                </button>
               </div>
             </div>
-          )}
-        </div>
+          </form>
+        )}
 
-        {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4">
-          <button
-            onClick={handlePrevious}
-            disabled={currentStep === 1}
-            className="px-6 py-3 border-2 border-border-light text-text-primary rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            ← Previous
-          </button>
+        {/* Questionnaire Step */}
+        {currentStep === 2 && (
+          <div className="bg-card rounded-xl p-6 sm:p-8 shadow-sm border border-border-light">
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gradient-to-br from-primary-start to-primary-end rounded-full flex items-center justify-center text-5xl mx-auto mb-6">
+                ❓
+              </div>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">
+                {selectedReport?.label} Questionnaire
+              </h2>
+              <p className="text-text-primary/70 mb-8 max-w-2xl mx-auto">
+                You&apos;ll now answer {selectedReport?.questions} carefully crafted questions to help us generate your personalized Quantum report.
+              </p>
+              <button
+                onClick={handleNext}
+                className="bg-gradient-to-r from-primary-start to-primary-end text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg"
+              >
+                Start Questionnaire
+              </button>
+            </div>
+          </div>
+        )}
 
-          {currentStep < totalSteps ? (
-            <button
-              onClick={handleNext}
-              className="px-6 py-3 bg-gradient-to-r from-primary-start to-primary-end text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
-            >
-              Next Step →
-            </button>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              className="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:opacity-90 transition-opacity shadow-lg"
-            >
-              Generate Report 🚀
-            </button>
-          )}
-        </div>
+        {/* Preview Step */}
+        {currentStep === 3 && (
+          <div className="bg-card rounded-xl p-6 sm:p-8 shadow-sm border border-border-light">
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gradient-to-br from-primary-start to-primary-end rounded-full flex items-center justify-center text-5xl mx-auto mb-6">
+                👁️
+              </div>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">Preview Your Report</h2>
+              <p className="text-text-primary/70 mb-8 max-w-2xl mx-auto">
+                Review your information and questionnaire responses before generating the final report.
+              </p>
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={handlePrevious}
+                  className="px-8 py-3 border-2 border-border-light text-text-primary rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  ← Back
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="bg-gradient-to-r from-primary-start to-primary-end text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity shadow-lg"
+                >
+                  Generate Report
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Download Step */}
+        {currentStep === 4 && (
+          <div className="bg-card rounded-xl p-6 sm:p-8 shadow-sm border border-border-light">
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 animate-bounce">
+                ✅
+              </div>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">Report Generated Successfully!</h2>
+              <p className="text-text-primary/70 mb-8 max-w-2xl mx-auto">
+                Your personalized {selectedReport?.label} report is ready for download.
+              </p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <button className="bg-gradient-to-r from-primary-start to-primary-end text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity shadow-lg">
+                  ⬇️ Download Report (PDF)
+                </button>
+                <Link
+                  href="/my-reports"
+                  className="px-8 py-3 border-2 border-border-light text-text-primary rounded-lg font-semibold hover:bg-gray-50 transition-colors inline-block"
+                >
+                  View All Reports
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Help Text */}
         <div className="text-center text-sm text-text-primary/60">
-          <p>Need help? <button className="text-primary-start hover:underline font-medium">Contact Support</button></p>
+          <p>
+            Need help?{" "}
+            <button className="text-primary-start hover:underline font-medium">
+              Contact Support
+            </button>
+          </p>
         </div>
       </div>
     </DashboardLayout>
