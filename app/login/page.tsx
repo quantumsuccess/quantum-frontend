@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("srinav44@gmail.com");
@@ -20,12 +21,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gradient-to-br from-primary-start to-primary-end">
-              <span className="text-white font-bold text-xl">★</span>
+          <Link href="/" className="flex items-center justify-center gap-1 group">
+            <div className="w-12 h-12 rounded-xl  flex items-center justify-center ">
+              <Image width={100} height={100} src='/qs.png' alt="logo"/>
             </div>
-            <span className="text-2xl font-bold text-primary-start">Quantum Success</span>
-          </div>
+            <Image width={160} height={100} src={'/logoName.jpg'} alt="logo name"/>
+          </Link>
           <p className="text-sm text-text-primary">Welcome back!</p>
         </div>
 

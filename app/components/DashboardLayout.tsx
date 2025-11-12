@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-
+import Image from "next/image";
 interface DashboardLayoutProps {
   children: ReactNode;
 }
@@ -56,12 +56,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {/* Logo */}
         <div className="p-6 border-b border-sidebar-active/30">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-start to-primary-end flex items-center justify-center shadow-lg">
-                <span className="text-white text-xl">★</span>
-              </div>
-              <span className="text-white font-semibold text-lg">Quantum Success</span>
+             <Link href="/" className="flex items-center justify-center gap-1 group">
+            <div className="w-12 h-12 rounded-xl  flex items-center justify-center ">
+              <Image width={100} height={100} src='/qs.png' alt="logo"/>
             </div>
+            <Image width={160} height={100} src={'/logoName.jpg'} alt="logo name"/>
+          </Link>
             {/* Close button for mobile */}
             <button
               onClick={closeSidebar}

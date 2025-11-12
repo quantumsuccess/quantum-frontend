@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,18 +30,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-start to-primary-end flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <span className="text-white font-bold text-lg">★</span>
+          <Link href="/" className="flex items-center gap-1 group">
+            <div className="w-12 h-12 rounded-xl  flex items-center justify-center ">
+              <Image width={100} height={100} src='/qs.png' alt="logo"/>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-text-primary group-hover:text-primary-start transition-colors">
-                Quantum Success
-              </span>
-              <span className="text-xs text-text-primary/60 font-medium hidden sm:block">
-                Unlock Your Potential
-              </span>
-            </div>
+            <Image width={160} height={100} src={'/logoName.jpg'} alt="logo name"/>
           </Link>
 
           {/* Desktop Navigation */}
